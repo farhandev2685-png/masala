@@ -324,7 +324,7 @@ export default async function HomePage() {
         <section className="border-t border-nerd-100 bg-cream">
           <div className="mx-auto max-w-site px-4 py-14 sm:px-6">
             <SectionHeader title="Latest articles & research" href={newsHref} />
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-4">
               {blogPosts.map((p) => (
                 <GridCard key={p.id} post={p} />
               ))}
@@ -375,7 +375,7 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-4">
                 {ipoPosts.map((p) => (
                   <Link
                     key={p.id}
@@ -388,11 +388,11 @@ export default async function HomePage() {
                         IPO Analysis
                       </span>
                     </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      <span className="font-mono text-[11px] font-semibold text-nerd-100/60">
+                    <div className="flex flex-1 flex-col p-3 sm:p-4">
+                      <span className="font-mono text-[10px] font-semibold text-nerd-100/60 sm:text-[11px]">
                         {new Date(p.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                       </span>
-                      <h3 className="mt-1.5 line-clamp-2 font-display text-[15px] font-bold leading-snug text-white transition group-hover:text-nerd-100">
+                      <h3 className="mt-1.5 line-clamp-3 font-display text-[13px] font-bold leading-snug text-white transition group-hover:text-nerd-100 sm:line-clamp-2 sm:text-[15px]">
                         {stripHtml(p.title.rendered)}
                       </h3>
                       <span className="mt-auto inline-flex items-center gap-1 pt-3 text-[11px] font-semibold text-nerd-200">

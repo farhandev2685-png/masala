@@ -78,15 +78,15 @@ export function GridCard({ post }: { post: WPPost }) {
       <div className="relative aspect-[16/9] overflow-hidden bg-nerd-50">
         <PostImage post={post} className="transition-transform duration-500 group-hover:scale-105" />
       </div>
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-5">
         <CategoryBadge post={post} variant="text" interactive={false} />
-        <h3 className="mt-2 line-clamp-2 font-display text-[15.5px] font-bold leading-snug text-ink-950 transition group-hover:text-nerd-700">
+        <h3 className="mt-1.5 line-clamp-3 font-display text-[13.5px] font-bold leading-snug text-ink-950 transition group-hover:text-nerd-700 sm:mt-2 sm:line-clamp-2 sm:text-[15.5px]">
           {stripHtml(post.title.rendered)}
         </h3>
-        <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted">
+        <p className="mt-2 hidden line-clamp-2 text-xs leading-relaxed text-muted sm:block">
           {stripHtml(post.excerpt.rendered)}
         </p>
-        <p className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-muted">
+        <p className="mt-auto flex items-center gap-1.5 pt-2.5 text-[11px] font-medium text-muted sm:mt-3 sm:pt-0">
           {author && <span className="font-semibold text-ink-700">{author.name}</span>}
           {author && <span className="text-stone-300">·</span>}
           <span>{formatDate(post.date)}</span>
