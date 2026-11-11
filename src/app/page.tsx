@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCategories, getPosts, postAuthor, stripHtml, WPAuthor, WPPost } from "@/lib/wp";
 import { TOPICS } from "@/lib/constants";
 import { GridCard, HeroCard } from "@/components/PostCard";
+import CategoryBadge from "@/components/CategoryBadge";
 import SectionHeader from "@/components/SectionHeader";
 import ToolsTabs from "@/components/ToolsTabs";
 import ResourcesTabs, { ResourceTab } from "@/components/ResourcesTabs";
@@ -12,6 +13,7 @@ import { timeAgo } from "@/lib/utils";
 import {
   ArrowUpRight,
   BadgeCheck,
+  Building2,
   Globe,
   GraduationCap,
   PiggyBank,
@@ -33,6 +35,7 @@ const TOPIC_ICONS: Record<string, typeof TrendingUp> = {
   tax: Receipt,
   learn: GraduationCap,
   "global-markets": Globe,
+  companies: Building2,
 };
 
 export default async function HomePage() {
@@ -42,14 +45,14 @@ export default async function HomePage() {
   ]);
 
   const validSlugs = new Set(categories.map((c) => c.slug));
-  const topics = TOPICS.filter((t) => validSlugs.has(t.slug));
+  const topics = TOPICS.filter((t) => validSlugs.has(t.slug)).slice(0, 8);
 
-  // Top story + "Latest" headline rail — LADbible-style lead block
-  const railPosts = latest.slice(1, 5);
+  // Top story + "Latest" headline rail — editorial lead block
+  const railPosts = latest.slice(1, 6);
   // Recommended reads — horizontally scrollable
-  const news = latest.slice(5, 11);
+  const news = latest.slice(6, 12);
   // Blog feed — the next posts, in a proper grid
-  const blogPosts = latest.slice(11, 23);
+  const blogPosts = latest.slice(12, 24);
   const newsHref = validSlugs.has("news")
     ? "/category/news"
     : validSlugs.has("markets")
@@ -102,12 +105,12 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ======================= HERO — light mint panel, search + topic cards ======================= */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-nerd-50 via-nerd-50/70 to-white">
+      {/* ======================= HERO — editorial lead + latest rail + topic strip ======================= */}
+      <section className="relative overflow-hidden border-b border-nerd-100 bg-gradient-to-b from-nerd-50/90 via-cream/60 to-white">
         {/* subtle texture + glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.4]"
+          className="pointer-events-none absolute inset-0 opacity-[0.35]"
           style={{
             backgroundImage: "radial-gradient(rgba(217,119,6,0.08) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
@@ -115,35 +118,59 @@ export default async function HomePage() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[60rem] -translate-x-1/2 rounded-full bg-nerd-200/40 blur-3xl"
+          className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[60rem] -translate-x-1/2 rounded-full bg-nerd-200/35 blur-3xl"
         />
-        <div className="relative mx-auto max-w-site px-4 pb-12 pt-10 sm:px-6 sm:pt-12">
-          {/* Top Story + Latest rail — LADbible-style lead block */}
-          <div className="grid gap-7 lg:grid-cols-[1.55fr_1fr] lg:gap-9">
+        <div className="relative mx-auto max-w-site px-4 pb-12 pt-7 sm:px-6 sm:pb-14 sm:pt-9">
+          {/* Top Story + Latest rail */}
+          <div className="grid gap-7 lg:grid-cols-[1.42fr_1fr] lg:gap-8">
             {latest[0] && (
-              <div>
-                <p className="mb-3.5 flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-950">
-                  <span className="h-2 w-2 rounded-full bg-nerd-700" /> Top Story
-                </p>
+              <div className="flex flex-col">
+                <div className="mb-3.5 flex items-center justify-between border-b border-ink-950/10 pb-2.5">
+                  <p className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-950">
+                    <span className="h-2 w-2 rounded-full bg-nerd-700" /> Top Story
+                  </p>
+                  <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-muted">
+                    Featured Report
+                  </span>
+                </div>
                 <HeroCard post={latest[0]} priority />
               </div>
             )}
             {railPosts.length > 0 && (
-              <div>
-                <p className="mb-3.5 flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-950">
-                  <span className="h-2 w-2 rounded-full bg-nerd-700" /> Latest
-                </p>
-                <div className="divide-y divide-nerd-100 border-t border-nerd-100">
+              <div className="flex flex-col">
+                <div className="mb-3.5 flex items-center justify-between border-b border-ink-950/10 pb-2.5">
+                  <p className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-950">
+                    <span className="h-2 w-2 rounded-full bg-nerd-700" /> Latest
+                  </p>
+                  <Link
+                    href={newsHref ?? "/search"}
+                    className="inline-flex items-center gap-1 font-mono text-[10px] font-bold uppercase tracking-wider text-nerd-700 transition hover:text-nerd-900"
+                  >
+                    All stories <ArrowUpRight className="h-3 w-3" />
+                  </Link>
+                </div>
+                <div className="flex flex-1 flex-col justify-between divide-y divide-nerd-100/80 overflow-hidden rounded-2xl bg-white px-4 py-1.5 shadow-card ring-1 ring-ink-950/[0.08] sm:px-5 sm:py-2">
                   {railPosts.map((p) => (
-                    <Link key={p.id} href={`/post/${p.slug}`} className="group flex items-start gap-3.5 py-4">
-                      <div className="relative h-[76px] w-[112px] shrink-0 overflow-hidden rounded-lg bg-nerd-100 ring-1 ring-ink-950/[0.06]">
-                        <PostImage post={p} size="medium" className="transition-transform duration-500 group-hover:scale-105" />
+                    <Link
+                      key={p.id}
+                      href={`/post/${p.slug}`}
+                      className="group flex items-center gap-3.5 py-3 transition-colors sm:py-3.5"
+                    >
+                      <div className="relative aspect-[16/9] w-[108px] shrink-0 overflow-hidden rounded-lg bg-nerd-50 ring-1 ring-ink-950/[0.06] sm:w-[120px]">
+                        <PostImage
+                          post={p}
+                          size="medium"
+                          sizes="140px"
+                          className="transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
-                      <div className="min-w-0">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-nerd-700">
-                          {timeAgo(p.date)}
-                        </span>
-                        <h3 className="mt-1 line-clamp-2 font-display text-[15px] font-bold leading-snug text-ink-950 transition group-hover:text-nerd-700">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <CategoryBadge post={p} variant="text" interactive={false} className="text-[10px]" />
+                          <span className="text-stone-300">·</span>
+                          <span className="font-mono text-[10px] font-medium text-muted">{timeAgo(p.date)}</span>
+                        </div>
+                        <h3 className="mt-1 line-clamp-2 font-display text-[14.5px] font-bold leading-snug text-ink-950 transition-colors group-hover:text-nerd-700">
                           {stripHtml(p.title.rendered)}
                         </h3>
                       </div>
@@ -154,23 +181,25 @@ export default async function HomePage() {
             )}
           </div>
 
-          {/* Topics — bordered cell strip */}
+          {/* Topics — clean card grid */}
           {topics.length > 0 && (
-            <div className="mt-10">
+            <div className="mt-9">
               <p className="mb-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted">Explore by topic</p>
-              <div className="grid grid-cols-2 overflow-hidden rounded-xl border border-nerd-100 bg-white sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {topics.map((t) => {
                   const Icon = TOPIC_ICONS[t.slug] ?? TrendingUp;
                   return (
                     <Link
                       key={t.slug}
                       href={`/category/${t.slug}`}
-                      className="group flex min-h-[76px] items-center gap-3 border-b border-r border-nerd-100 bg-white px-4 py-3 transition-colors hover:bg-nerd-50 sm:px-5"
+                      className="group flex min-h-[72px] items-center gap-3.5 rounded-xl bg-white px-4 py-3 shadow-card ring-1 ring-ink-950/[0.07] transition-all hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-nerd-700/35"
                     >
-                      <Icon className="h-5 w-5 shrink-0 text-nerd-700" strokeWidth={1.75} />
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-nerd-50 text-nerd-700 ring-1 ring-nerd-100 transition-colors group-hover:bg-nerd-700 group-hover:text-white group-hover:ring-nerd-700">
+                        <Icon className="h-4 w-4" strokeWidth={2} />
+                      </span>
                       <span className="min-w-0">
                         <span className="block text-sm font-bold text-ink-950 transition group-hover:text-nerd-700">{t.label}</span>
-                        <span className="mt-0.5 hidden text-[11px] leading-snug text-muted sm:block">{t.blurb}</span>
+                        <span className="mt-0.5 hidden line-clamp-1 text-[11px] leading-snug text-muted sm:block">{t.blurb}</span>
                       </span>
                     </Link>
                   );

@@ -173,7 +173,8 @@ export function postTags(post: WPPost): WPTerm[] {
 }
 
 export function postAuthor(post: WPPost): WPAuthor | null {
-  return post._embedded?.author?.[0] ?? null;
+  const author = post._embedded?.author?.[0];
+  return author?.name ? author : null;
 }
 
 export function stripHtml(html: string): string {

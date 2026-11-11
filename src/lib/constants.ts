@@ -193,4 +193,5 @@ export const TOPICS: { slug: string; label: string; blurb: string }[] = [
   { slug: "tax", label: "Taxes", blurb: "Regimes, deductions and filing" },
   { slug: "learn", label: "Investing Basics", blurb: "First steps into stocks and markets" },
   { slug: "global-markets", label: "Global Markets", blurb: "World cues that move India" },
+  { slug: "companies", label: "Companies", blurb: "Earnings, fundamentals and results" },
 ];

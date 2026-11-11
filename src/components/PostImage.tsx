@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 export default function PostImage({
   post,
   size = "large",
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   className,
   priority = false,
 }: {
   post: WPPost;
   size?: "full" | "large" | "medium_large" | "medium";
+  sizes?: string;
   className?: string;
   priority?: boolean;
 }) {
@@ -30,7 +32,7 @@ export default function PostImage({
       alt={img.alt}
       fill
       priority={priority}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      sizes={sizes}
       className={cn("object-cover", className)}
     />
   );

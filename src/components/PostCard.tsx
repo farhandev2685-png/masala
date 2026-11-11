@@ -1,43 +1,64 @@
 import Link from "next/link";
-import { Clock, ArrowUpRight, BookOpen } from "lucide-react";
+import { Clock, ArrowUpRight } from "lucide-react";
 import { postAuthor, stripHtml, WPPost } from "@/lib/wp";
 import { formatDate, readingTime, timeAgo } from "@/lib/utils";
 import PostImage from "./PostImage";
 import CategoryBadge from "./CategoryBadge";
 
-/** Large hero card — featured story overlay */
+/** Large hero card — uncropped 16:9 visual + clean editorial body */
 export function HeroCard({ post, priority = false }: { post: WPPost; priority?: boolean }) {
   const mins = readingTime(post.content.rendered);
+  const author = postAuthor(post);
+  const authorLabel = author?.name || "Masala Research Desk";
+  const initial = author?.name?.trim().charAt(0).toUpperCase() || "म";
+
   return (
     <Link
       href={`/post/${post.slug}`}
-      className="group relative block h-full overflow-hidden rounded-2xl bg-nerd-950 shadow-terminal ring-1 ring-white/10 transition-all hover:shadow-card-hover"
+      className="group flex flex-1 flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-ink-950/[0.08] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-nerd-700/35"
     >
-      <div className="relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full lg:min-h-[480px]">
-        <PostImage post={post} priority={priority} className="transition-transform duration-700 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-nerd-950 via-nerd-950/70 to-nerd-950/10" />
-        <div className="absolute left-5 top-5 flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-nerd-700 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
-            <BookOpen className="h-3 w-3" /> Featured
+      <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-ink-950/[0.06] bg-nerd-50">
+        <PostImage
+          post={post}
+          size="full"
+          priority={priority}
+          sizes="(max-width: 1024px) 100vw, 720px"
+          className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-5 sm:p-6 lg:p-7">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <CategoryBadge post={post} interactive={false} />
+          <span className="inline-flex items-center gap-1 font-mono text-[11px] font-medium text-muted">
+            <Clock className="h-3.5 w-3.5 text-nerd-700" /> {mins} min read
           </span>
+          <span className="text-stone-300">•</span>
+          <span className="font-mono text-[11px] font-medium text-muted">{timeAgo(post.date)}</span>
         </div>
-        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
-          <div className="mb-3 flex flex-wrap items-center gap-2.5">
-            <CategoryBadge post={post} interactive={false} />
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-0.5 font-mono text-[11px] font-medium text-stone-200 backdrop-blur-sm">
-              <Clock className="h-3 w-3 text-nerd-300" /> {mins} min read
-            </span>
-          </div>
-          <h2 className="font-display text-xl font-extrabold leading-snug tracking-tight text-white transition group-hover:text-nerd-200 sm:text-3xl">
-            {stripHtml(post.title.rendered)}
-          </h2>
-          <p className="mt-2.5 line-clamp-2 hidden max-w-2xl text-sm leading-relaxed text-stone-300 sm:block">
-            {stripHtml(post.excerpt.rendered)}
-          </p>
-          <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-stone-300">
-            <span className="font-mono text-[11px] text-stone-400">Published {timeAgo(post.date)}</span>
-            <span className="inline-flex items-center gap-1 font-semibold text-nerd-300 transition group-hover:translate-x-0.5">
-              Read Full Report <ArrowUpRight className="h-3.5 w-3.5" />
+
+        <h2 className="mt-3.5 font-display text-2xl font-extrabold leading-[1.2] tracking-tight text-ink-950 transition-colors group-hover:text-nerd-700 sm:text-[27px]">
+          {stripHtml(post.title.rendered)}
+        </h2>
+
+        <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-ink-700/85 sm:text-[15px] sm:leading-7">
+          {stripHtml(post.excerpt.rendered)}
+        </p>
+
+        <div className="mt-auto pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-nerd-100/90 pt-4">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-nerd-100 font-display text-xs font-extrabold text-nerd-800 ring-1 ring-nerd-200/80">
+                {initial}
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-bold text-ink-900">{authorLabel}</p>
+                <p className="font-mono text-[10.5px] text-muted">{formatDate(post.date)}</p>
+              </div>
+            </div>
+
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-nerd-50 px-3.5 py-1.5 text-xs font-bold text-nerd-800 ring-1 ring-nerd-200/80 transition-all group-hover:bg-nerd-700 group-hover:text-white group-hover:ring-nerd-700">
+              Read story <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </span>
           </div>
         </div>
