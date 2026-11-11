@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-ink-800 antialiased;
+}
+
+::selection {
+  @apply bg-nerd-200 text-nerd-800;
+}
+
+/* Article body rendered from WordPress HTML — clean NerdWallet-grade editorial */
+.article-body {
+  @apply text-[17px] leading-[1.8] text-ink-800;
+}
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+  @apply font-display font-bold text-ink-950 mt-12 mb-4 scroll-mt-28 leading-snug;
+}
+.article-body h2 {
+  @apply text-[24px] sm:text-[28px] border-b border-nerd-100 pb-3;
+}
+.article-body h3 {
+  @apply text-xl sm:text-[22px];
+}
+.article-body h4 {
+  @apply text-lg;
+}
+.article-body p {
+  @apply mb-6;
+}
+.article-body strong {
+  @apply font-semibold text-ink-950;
+}
+.article-body em {
+  @apply text-ink-700;
+}
+.article-body a {
+  @apply font-medium text-nerd-700 underline decoration-nerd-300 underline-offset-4 transition-colors hover:text-nerd-800 hover:decoration-nerd-700;
+}
+.article-body ul,
+.article-body ol {
+  @apply mb-6 pl-6 space-y-2.5;
+}
+.article-body ul {
+  @apply list-disc marker:text-nerd-700;
+}
+.article-body ol {
+  @apply list-decimal marker:font-semibold marker:text-nerd-700;
+}
+.article-body li::marker {
+  @apply font-semibold;
+}
+.article-body blockquote {
+  @apply border-l-[3px] border-nerd-700 bg-nerd-50 py-4 px-6 font-display text-lg italic leading-relaxed text-nerd-800 my-9 rounded-r-xl;
+}
+.article-body img,
+.article-body figure {
+  @apply rounded-xl my-8;
+}
+.article-body figcaption {
+  @apply text-center text-[13px] text-muted mt-3;
+}
+.article-body table {
+  @apply w-full text-[15px] my-9 border-collapse;
+}
+.article-body th,
+.article-body td {
+  @apply border-b border-nerd-100 px-4 py-3 text-left align-top;
+}
+.article-body th {
+  @apply bg-nerd-700 text-white font-sans font-semibold text-[13px] uppercase tracking-[0.06em] border-b-0;
+}
+.article-body th:first-child {
+  @apply rounded-tl-lg;
+}
+.article-body th:last-child {
+  @apply rounded-tr-lg;
+}
+.article-body tbody tr:hover td {
+  @apply bg-nerd-50/70;
+}
+.article-body td {
+  font-variant-numeric: tabular-nums;
+}
+.article-body .wp-block-separator,
+.article-body hr {
+  @apply my-10 border-nerd-100;
+}
+
+/* hide leftover WP share widgets inside content */
+.article-body .addtoany_share_save_container {
+  display: none;
+}
+
+/* thin scrollbars */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-300 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-stone-400;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
